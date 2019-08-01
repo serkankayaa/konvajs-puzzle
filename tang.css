@@ -1,12 +1,36 @@
-#buttons {
-    position: absolute;
-    top: 5px;
-    left: 10px;
-  }
-
 body {
     margin: 0;
     padding: 0;
     overflow: hidden;
     background-color: #f0f0f0;
+}
+
+#buttons {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+}
+#buttons > button {
+    padding: 10px;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+#btnRotate {
+    background-color: #DB504A;
+    border: 3px solid #DB504A;
+    padding: 10px;
+    border-radius: 15px;
+    margin-top: 30px;
+    filter: drop-shadow(2px 4px 6px black);
+}
+
+#btnRotate:hover {
+    color: black;
+    border: 3px solid #56A3A6;
+    cursor: pointer;
+}
+
+#btnRotate:focus {
+    outline: 0;
 }
