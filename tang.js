@@ -13,8 +13,6 @@ $(document).ready(function () {
     });
 
     var layer = new Konva.Layer();
-    var rectX = stage.width() / 2 - 50;
-    var rectY = stage.height() / 2 - 25;
 
     var rect = new Konva.Line({
         x: 350,
@@ -36,7 +34,6 @@ $(document).ready(function () {
         name: "poly",
         strokeWidth: 1,
         closed: true,
-        draggable: true,
         globalCompositeOperation: 'xor',
         isCorrect: true,
         visible: true
@@ -51,7 +48,6 @@ $(document).ready(function () {
         name: "poly",
         strokeWidth: 1,
         closed: true,
-        draggable: true,
         globalCompositeOperation: 'xor',
         visible: false,
     });
@@ -65,7 +61,6 @@ $(document).ready(function () {
         name: "poly",
         strokeWidth: 1,
         closed: true,
-        draggable: true,
         globalCompositeOperation: 'xor',
         visible: false
     });
@@ -79,64 +74,58 @@ $(document).ready(function () {
         name: "poly",
         strokeWidth: 1,
         closed: true,
-        draggable: true,
         globalCompositeOperation: 'xor',
         visible: false
     });
 
     var poly2 = new Konva.Line({
         x: 500,
-        y: 200,
+        y: 100,
         points: [0, 0, 150, 90, 150, 90, 150, 0],
         fill: 'orange',
         stroke: 'black',
         name: "poly2",
         strokeWidth: 1,
         closed: true,
-        draggable: true,
         globalCompositeOperation: 'xor',
         isCorrect: true
     });
 
     var poly2R1 = new Konva.Line({
         x: 500,
-        y: 200,
+        y: 100,
         points: [90, 0, 0, 150, 0, 150, 90, 150],
         fill: 'orange',
         stroke: 'black',
         name: "poly2",
         strokeWidth: 1,
         closed: true,
-        draggable: true,
         globalCompositeOperation: 'xor',
         visible: false
     });
 
     var poly2R2 = new Konva.Line({
         x: 500,
-        y: 200,
+        y: 100,
         points: [0, 90, 150, 90, 150, 90, 0, 0],
         fill: 'orange',
         stroke: 'black',
         name: "poly2",
         strokeWidth: 1,
         closed: true,
-        draggable: true,
         globalCompositeOperation: 'xor',
         visible: false
     });
 
     var poly2R3 = new Konva.Line({
         x: 500,
-        y: 200,
+        y: 100,
         points: [0, 0, 0, 150, 0, 150, 90, 0],
         fill: 'orange',
         stroke: 'black',
         name: "poly2",
         strokeWidth: 1,
         closed: true,
-        draggable: true,
-        visible: true,
         globalCompositeOperation: 'xor',
         visible: false
     });
@@ -206,7 +195,6 @@ $(document).ready(function () {
         name: "poly4",
         strokeWidth: 1,
         closed: true,
-        draggable: true,
         globalCompositeOperation: 'xor',
         isCorrect: true
     });
@@ -220,7 +208,6 @@ $(document).ready(function () {
         name: "poly4",
         strokeWidth: 1,
         closed: true,
-        draggable: true,
         globalCompositeOperation: 'xor',
         visible: false
     });
@@ -234,7 +221,6 @@ $(document).ready(function () {
         name: "poly4",
         strokeWidth: 1,
         closed: true,
-        draggable: true,
         globalCompositeOperation: 'xor',
         visible: false
     });
@@ -248,7 +234,6 @@ $(document).ready(function () {
         name: "poly4",
         strokeWidth: 1,
         closed: true,
-        draggable: true,
         globalCompositeOperation: 'xor',
         visible: false
     });
@@ -316,7 +301,7 @@ $(document).ready(function () {
         name: "poly6",
         stroke: 'black',
         strokeWidth: 1,
-        fill: 'gray',
+        fill: '#34495E',
         closed: true,
         draggable: true,
         globalCompositeOperation: 'xor',
@@ -330,7 +315,7 @@ $(document).ready(function () {
         name: "poly6",
         stroke: 'black',
         strokeWidth: 1,
-        fill: 'gray',
+        fill: '#34495E',
         closed: true,
         draggable: true,
         globalCompositeOperation: 'xor',
@@ -344,7 +329,7 @@ $(document).ready(function () {
         name: "poly6",
         stroke: 'black',
         strokeWidth: 1,
-        fill: 'gray',
+        fill: '#34495E',
         closed: true,
         draggable: true,
         globalCompositeOperation: 'xor',
@@ -358,7 +343,7 @@ $(document).ready(function () {
         name: "poly6",
         stroke: 'black',
         strokeWidth: 1,
-        fill: 'gray',
+        fill: '#34495E',
         closed: true,
         draggable: true,
         globalCompositeOperation: 'xor',
@@ -385,11 +370,33 @@ $(document).ready(function () {
         poly4, poly4R1, poly4R2, poly4R3,
         poly5, poly5R1, poly5R2, poly5R3, poly6, poly6R1, poly6R2, poly6R3, poly7);
 
-    seatedShapes.push(poly, poly2, poly4);
-
     snapToWall(rect, 20);
     snapToAll(5);
     autoAddShapes(shapes, rect);
+    loadStyle();
+    setSeatedShapes(shapes);
+
+    function setSeatedShapes(shapes) {
+        shapes.forEach(shape => {
+            if (!shape.draggable()) {
+                seatedShapes.push(shape);
+            }
+        });
+    }
+
+    function loadStyle() {
+        stage.container().style = `filter:drop-shadow(2px 30px 6px gray);`;
+
+        shapes.forEach(shape => {
+            shape.on('mouseenter', function () {
+                stage.container().style.cursor = 'pointer';
+            });
+
+            shape.on('mouseleave', function () {
+                stage.container().style.cursor = 'default';
+            });
+        });
+    }
 
     function autoAddShapes(shapes, rect) {
         layer.add(rect);
@@ -510,6 +517,10 @@ $(document).ready(function () {
     layer.on('click', function (e) {
         var selectedShape = e.target;
 
+        if (!selectedShape.draggable()) {
+            return;
+        }
+
         if (selectedShape.attrs.isTarget) {
             return;
         }
@@ -529,7 +540,7 @@ $(document).ready(function () {
 
         if (checkSelected) {
             selectedShape.stroke("#99cc00");
-            selectedShape.strokeWidth(2);
+            selectedShape.strokeWidth(10);
             layer.draw();
         }
 
@@ -539,6 +550,7 @@ $(document).ready(function () {
             return;
         }
 
+        //ilk defa şekil seçilip rotate edilecekse çalışır.
         if (rotateShapes.length <= 0) {
             shapes.forEach(element => {
                 if (shapeRotate.attrs.name == element.attrs.name) {
@@ -547,9 +559,10 @@ $(document).ready(function () {
 
                 rotateShapes.sort();
             });
-        } else if (rotateShapes.length > 0) {
+        } else {
             rotateShapes.forEach(element => {
                 if (shapeRotate.attrs.name != element.attrs.name) {
+                    //başka bir şekil seçildiğinde önceki seçilen şekilleri sil.
                     rotateShapes = [];
                     rotateClick = 0;
                 }
@@ -594,13 +607,5 @@ $(document).ready(function () {
         }
 
         return;
-
-        // var rotate = 90;
-        // shapeRotate.offsetX(shapeRotate.width() / 2);
-        // shapeRotate.offsetY(shapeRotate.height() / 2);
-
-        // shapeRotate.rotate(rotate);
-        // layer.draw();
-
     });
 });
