@@ -414,12 +414,19 @@ $(document).ready(function () {
         poly4, poly4R1, poly4R2, poly4R3,
         poly5, poly5R1, poly5R2, poly5R3, poly6, poly6R1, poly6R2, poly6R3, poly7);
 
+    var prevSelectedShape = "";
+    var shapeRotate = new Konva.Line();
+    var checkSelected = false;
+    var checkComplete = false;
+    var rotateShapes = [];
+
     snapToWall(rect, 20);
     snapToAll(5);
     autoAddShapes(shapes, rect);
     loadStyle();
     setSeatedShapes(shapes);
     checkCompleted();
+    checkGameTime(20, rect);
 
     function setSeatedShapes(shapes) {
         shapes.forEach(shape => {
@@ -554,105 +561,23 @@ $(document).ready(function () {
         });
     }
 
-    var prevSelectedShape = "";
-    var shapeRotate = new Konva.Line();
-    var checkSelected = false;
-    var rotateShapes = [];
-
-    layer.on('click', function (e) {
-        var selectedShape = e.target;
-
-        if (!selectedShape.draggable()) {
-            return;
-        }
-
-        if (selectedShape.attrs.isTarget) {
-            return;
-        }
-
-        if (prevSelectedShape == selectedShape) {
-            return;
-        }
-
-        if (prevSelectedShape != "") {
-            prevSelectedShape.stroke("black");
-            prevSelectedShape.strokeWidth(1);
-        }
-
-        prevSelectedShape = selectedShape;
-
-        checkSelected = true;
-
-        if (checkSelected) {
-            selectedShape.stroke("#99cc00");
-            selectedShape.strokeWidth(4);
-            layer.draw();
-        }
-
-        shapeRotate = prepareRotate(selectedShape);
-
-        if (shapeRotate.attrs.isSquare) {
-            return;
-        }
-
-        //ilk defa şekil seçilip rotate edilecekse çalışır.
-        if (rotateShapes.length <= 0) {
-            shapes.forEach(element => {
-                if (shapeRotate.attrs.name == element.attrs.name) {
-                    rotateShapes.push(element);
-                }
-
-                rotateShapes.sort();
-            });
-        } else {
-            rotateShapes.forEach(element => {
-                if (shapeRotate.attrs.name != element.attrs.name) {
-                    //başka bir şekil seçildiğinde önceki seçilen şekilleri sil.
-                    rotateShapes = [];
-                    rotateClick = 0;
-                }
-
-                shapes.forEach(element => {
-                    if (shapeRotate.attrs.name == element.attrs.name) {
-                        rotateShapes.push(element);
-                    }
-
-                    rotateShapes.sort();
-                });
-
-                rotateShapes.sort();
-            });
-        }
-    });
-
     function prepareRotate(selectedShape) {
         if (checkSelected) {
             return selectedShape;
         }
     }
 
-    $('#btnRotate').click(function () {
-        var currentX = shapeRotate.getAbsolutePosition().x;
-        var currentY = shapeRotate.getAbsolutePosition().y;
+    function checkSelectedShape(selected) {
+        selected.stroke("#99cc00");
+        selected.strokeWidth(4);
+        layer.draw();
+    }
 
-        if (rotateShapes.length > 0) {
-            for (var i = 0; i < rotateShapes.length; i++) {
-                rotateShapes[i].hide();
-            }
-
-            if (rotateClick == 3) {
-                rotateClick = -1;
-            }
-
-            rotateShapes[rotateClick + 1].setAttr('x', currentX);
-            rotateShapes[rotateClick + 1].setAttr('y', currentY);
-            rotateShapes[rotateClick + 1].show();
-            layer.draw();
-            rotateClick++;
-        }
-
-        return;
-    });
+    function clearPrevSelected(selected) {
+        selected.stroke("black");
+        selected.strokeWidth(1);
+        layer.draw();
+    }
 
     function availableShapeCount() {
         var allShapeCount = 0;
@@ -700,7 +625,8 @@ $(document).ready(function () {
                     seatedCorrectShapes.push(shape);
 
                     if (shapeCount == seatedCount) {
-                        alert("oyun bitti");
+                        checkComplete = true;
+                        alert("oyun bitti tebrikler");
                     }
                 }
                 else {
@@ -720,4 +646,112 @@ $(document).ready(function () {
             });
         });
     }
+
+    function checkGameTime(gameTime, targetShape) {
+        var timeLimit = gameTime / 4;
+        var warningLimit = 1;
+
+        var timer = setInterval(function () {
+            gameTime--;
+
+            if(gameTime <= timeLimit) {
+                targetShape.stroke("red");
+                targetShape.strokeWidth(warningLimit);
+                layer.draw();
+                warningLimit ++;
+
+                if(gameTime == 0) {
+                    clearInterval(timer);
+                    alert("süre doldu zamanında çözemediniz.");
+                    window.location.reload();
+                    return;
+                }
+            }
+            
+        }, 1000);
+    }
+
+    layer.on('click dragmove', function (e) {
+        var selectedShape = e.target;
+
+        if (!selectedShape.draggable()) {
+            return;
+        }
+
+        if (selectedShape.attrs.isTarget) {
+            return;
+        }
+
+        if (prevSelectedShape == selectedShape) {
+            return;
+        }
+
+        if (prevSelectedShape != "") {
+            clearPrevSelected(prevSelectedShape);
+        }
+
+        prevSelectedShape = selectedShape;
+
+        checkSelected = true;
+
+        shapeRotate = prepareRotate(selectedShape);
+
+        //ilk defa şekil seçilip rotate edilecekse çalışır.
+        if (rotateShapes.length <= 0) {
+            shapes.forEach(element => {
+                if (shapeRotate.attrs.name == element.attrs.name) {
+                    rotateShapes.push(element);
+                    checkSelectedShape(element);
+                }
+
+                rotateShapes.sort();
+            });
+        } else {
+            rotateShapes.forEach(element => {
+                if (shapeRotate.attrs.name != element.attrs.name) {
+                    //başka bir şekil seçildiğinde önceki seçilen şekilleri sil.
+                    rotateShapes = [];
+                    rotateClick = 0;
+                    clearPrevSelected(element);
+                }
+
+                shapes.forEach(element => {
+                    if (shapeRotate.attrs.name == element.attrs.name) {
+                        rotateShapes.push(element);
+                        checkSelectedShape(element);
+                    }
+
+                    rotateShapes.sort();
+                });
+
+                rotateShapes.sort();
+            });
+        }
+    });
+
+    $('#btnRotate').click(function () {
+        if (shapeRotate.attrs.isSquare) {
+            return;
+        }
+
+        var currentX = shapeRotate.getAbsolutePosition().x;
+        var currentY = shapeRotate.getAbsolutePosition().y;
+        if (rotateShapes.length > 0) {
+            for (var i = 0; i < rotateShapes.length; i++) {
+                rotateShapes[i].hide();
+            }
+
+            if (rotateClick == 3) {
+                rotateClick = -1;
+            }
+
+            rotateShapes[rotateClick + 1].setAttr('x', currentX);
+            rotateShapes[rotateClick + 1].setAttr('y', currentY);
+            rotateShapes[rotateClick + 1].show();
+            layer.draw();
+            rotateClick++;
+        }
+
+        return;
+    });
 });
