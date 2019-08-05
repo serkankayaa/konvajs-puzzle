@@ -418,6 +418,7 @@ $(document).ready(function () {
     var shapeRotate = new Konva.Line();
     var checkSelected = false;
     var checkComplete = false;
+    var timeIsOver = false;
     var rotateShapes = [];
 
     snapToWall(rect, 20);
@@ -429,7 +430,7 @@ $(document).ready(function () {
     checkGameTime(20, rect);
 
     function setSeatedShapes(shapes) {
-        shapes.forEach(shape => {
+        shapes.forEach(function (shape) {
             if (!shape.draggable()) {
                 seatedShapes.push(shape);
             }
@@ -437,9 +438,11 @@ $(document).ready(function () {
     }
 
     function loadStyle() {
-        stage.container().style = `filter:drop-shadow(2px 30px 6px gray);`;
+        if (!checkIE()) {
+            stage.container().style = "filter:drop-shadow(2px 30px 6px gray);";
+        }
 
-        shapes.forEach(shape => {
+        shapes.forEach(function (shape) {
             shape.on('mouseenter', function () {
                 stage.container().style.cursor = 'pointer';
             });
@@ -452,7 +455,7 @@ $(document).ready(function () {
 
     function autoAddShapes(shapes, rect) {
         layer.add(rect);
-        shapes.forEach(element => {
+        shapes.forEach(function (element) {
             layer.add(element);
         });
 
@@ -461,7 +464,7 @@ $(document).ready(function () {
 
     //Snap Shapes Method
     function checkSnap(x, y, snapShape, targetSnapShape, tolerance) {
-        targetSnapShape.forEach(element => {
+        targetSnapShape.forEach(function (element) {
             var offsetX = snapShape.x();
             var offsetY = snapShape.y();
 
@@ -583,13 +586,13 @@ $(document).ready(function () {
         var allShapeCount = 0;
         var seatedShapeCount = 0;
 
-        shapes.forEach(shape => {
+        shapes.forEach(function (shape) {
             if (shape.attrs.isCorrect) {
                 allShapeCount++;
             }
         });
 
-        seatedShapes.forEach(seatedShape => {
+        seatedShapes.forEach(function (seatedShape) {
             if (seatedShape.attrs.isCorrect) {
                 seatedShapeCount++;
             }
@@ -605,7 +608,7 @@ $(document).ready(function () {
         var seatedCount = 0;
         var seatedCorrectShapes = [];
 
-        shapes.forEach(shape => {
+        shapes.forEach(function (shape) {
             shape.on('dragend', function () {
                 var currentX = shape.getAbsolutePosition().x;
                 var currentY = shape.getAbsolutePosition().y;
@@ -627,6 +630,7 @@ $(document).ready(function () {
                     if (shapeCount == seatedCount) {
                         checkComplete = true;
                         alert("oyun bitti tebrikler");
+                        window.location.reload();
                     }
                 }
                 else {
@@ -654,20 +658,22 @@ $(document).ready(function () {
         var timer = setInterval(function () {
             gameTime--;
 
-            if(gameTime <= timeLimit) {
+            if (gameTime <= timeLimit && !checkComplete) {
                 targetShape.stroke("red");
                 targetShape.strokeWidth(warningLimit);
                 layer.draw();
-                warningLimit ++;
+                warningLimit++;
 
-                if(gameTime == 0) {
+                if (gameTime == 0) {
                     clearInterval(timer);
+                    timeIsOver = true;
                     alert("süre doldu zamanında çözemediniz.");
+                    layer.draw();
                     window.location.reload();
                     return;
                 }
             }
-            
+
         }, 1000);
     }
 
@@ -698,7 +704,7 @@ $(document).ready(function () {
 
         //ilk defa şekil seçilip rotate edilecekse çalışır.
         if (rotateShapes.length <= 0) {
-            shapes.forEach(element => {
+            shapes.forEach(function (element) {
                 if (shapeRotate.attrs.name == element.attrs.name) {
                     rotateShapes.push(element);
                     checkSelectedShape(element);
@@ -707,7 +713,7 @@ $(document).ready(function () {
                 rotateShapes.sort();
             });
         } else {
-            rotateShapes.forEach(element => {
+            rotateShapes.forEach(function (element) {
                 if (shapeRotate.attrs.name != element.attrs.name) {
                     //başka bir şekil seçildiğinde önceki seçilen şekilleri sil.
                     rotateShapes = [];
@@ -715,7 +721,7 @@ $(document).ready(function () {
                     clearPrevSelected(element);
                 }
 
-                shapes.forEach(element => {
+                shapes.forEach(function (element) {
                     if (shapeRotate.attrs.name == element.attrs.name) {
                         rotateShapes.push(element);
                         checkSelectedShape(element);
@@ -754,4 +760,27 @@ $(document).ready(function () {
 
         return;
     });
+
+    //çalıştırılan tarayıcının explorer olup olmaması kontrol edilir.
+    function checkIE() {
+        var ua = window.navigator.userAgent;
+
+        var msie = ua.indexOf('MSIE ');
+        if (msie > 0) {
+            return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+        }
+
+        var trident = ua.indexOf('Trident/');
+        if (trident > 0) {
+            var rv = ua.indexOf('rv:');
+            return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+        }
+
+        var edge = ua.indexOf('Edge/');
+        if (edge > 0) {
+            return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+        }
+
+        return false;
+    }
 });
