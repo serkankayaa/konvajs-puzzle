@@ -427,7 +427,7 @@ $(document).ready(function () {
     loadStyle();
     setSeatedShapes(shapes);
     checkCompleted();
-    // checkGameTime(20, rect);
+    checkGameTime(20, rect);
 
     function setSeatedShapes(shapes) {
         shapes.forEach(function (shape) {
