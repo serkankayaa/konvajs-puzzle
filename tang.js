@@ -427,7 +427,7 @@ $(document).ready(function () {
     loadStyle();
     setSeatedShapes(shapes);
     checkCompleted();
-    // checkGameTime(20, rect);
+    checkGameTime(20, rect);
 
     function setSeatedShapes(shapes) {
         shapes.forEach(function (shape) {
@@ -443,6 +443,8 @@ $(document).ready(function () {
         }
 
         shapes.forEach(function (shape) {
+            shape.shadowForStrokeEnabled(false);
+
             shape.on('mouseenter', function () {
                 stage.container().style.cursor = 'pointer';
             });
@@ -509,7 +511,7 @@ $(document).ready(function () {
 
         if (Math.abs(fark) < tolerance) {
             snapShape.x(snapShape.x() - fark);
-            layer.draw();
+            layer.batchDraw();
             offsetX = snapShape.x();
         }
 
@@ -517,7 +519,7 @@ $(document).ready(function () {
 
         if (Math.abs(fark) < tolerance) {
             snapShape.y(snapShape.y() - fark);
-            layer.draw();
+            layer.batchDraw();
             offsetY = snapShape.y();
         }
 
@@ -525,14 +527,14 @@ $(document).ready(function () {
 
         if (Math.abs(fark) < tolerance) {
             snapShape.x(snapShape.x() - fark);
-            layer.draw();
+            layer.batchDraw();
         }
 
         fark = offsetY + y - targetSnapShape.position().y - targetSnapShape.height();
 
         if (Math.abs(fark) < tolerance) {
             snapShape.y(snapShape.y() - fark);
-            layer.draw();
+            layer.batchDraw();
         }
 
         return Math.abs(offsetX + x - targetSnapShape.position().x) < 10 || Math.abs(offsetY + y - targetSnapShape.position().y) < 10;
@@ -573,13 +575,13 @@ $(document).ready(function () {
     function checkSelectedShape(selected) {
         selected.stroke("#99cc00");
         selected.strokeWidth(4);
-        layer.draw();
+        layer.batchDraw();
     }
 
     function clearPrevSelected(selected) {
         selected.stroke("black");
         selected.strokeWidth(1);
-        layer.draw();
+        layer.batchDraw();
     }
 
     function availableShapeCount() {
@@ -651,31 +653,31 @@ $(document).ready(function () {
         });
     }
 
-    // function checkGameTime(gameTime, targetShape) {
-    //     var timeLimit = gameTime / 4;
-    //     var warningLimit = 1;
+    function checkGameTime(gameTime, targetShape) {
+        var timeLimit = gameTime / 4;
+        var warningLimit = 1;
 
-    //     var timer = setInterval(function () {
-    //         gameTime--;
+        var timer = setInterval(function () {
+            gameTime--;
 
-    //         if (gameTime <= timeLimit && !checkComplete) {
-    //             targetShape.stroke("red");
-    //             targetShape.strokeWidth(warningLimit);
-    //             layer.draw();
-    //             warningLimit++;
+            if (gameTime <= timeLimit && !checkComplete) {
+                targetShape.stroke("red");
+                targetShape.strokeWidth(warningLimit);
+                layer.draw();
+                warningLimit++;
 
-    //             if (gameTime == 0) {
-    //                 clearInterval(timer);
-    //                 timeIsOver = true;
-    //                 alert("süre doldu zamanında çözemediniz.");
-    //                 layer.draw();
-    //                 window.location.reload();
-    //                 return;
-    //             }
-    //         }
+                if (gameTime == 0) {
+                    clearInterval(timer);
+                    timeIsOver = true;
+                    alert("süre doldu zamanında çözemediniz.");
+                    layer.draw();
+                    window.location.reload();
+                    return;
+                }
+            }
 
-    //     }, 1000);
-    // }
+        }, 1000);
+    }
 
     layer.on('click dragmove', function (e) {
         var selectedShape = e.target;
@@ -754,7 +756,7 @@ $(document).ready(function () {
             rotateShapes[rotateClick + 1].setAttr('x', currentX);
             rotateShapes[rotateClick + 1].setAttr('y', currentY);
             rotateShapes[rotateClick + 1].show();
-            layer.draw();
+            layer.batchDraw();
             rotateClick++;
         }
 
