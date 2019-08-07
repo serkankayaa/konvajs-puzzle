@@ -5,6 +5,13 @@ $(document).ready(function () {
     var shapes = [];
     var seatedShapes = [];
     var rotateClick = 0;
+    var targetShape;
+    var prevSelectedShape = "";
+    var shapeRotate = new Konva.Line();
+    var checkSelected = false;
+    var checkComplete = false;
+    var timeIsOver = false;
+    var rotateShapes = [];
 
     var stage = new Konva.Stage({
         container: 'container',
@@ -14,420 +21,66 @@ $(document).ready(function () {
 
     var layer = new Konva.Layer();
 
-    var rect = new Konva.Line({
-        x: 350,
-        y: 100,
-        points: [0, 0, 0, 300, 300, 300, 300, 0],
-        name: "rect",
-        stroke: 'green',
-        strokeWidth: 2,
-        closed: true,
-        isTarget: true,
-    });
-
-    var poly = new Konva.Line({
-        x: 350,
-        y: 100,
-        points: [0, 0, 0, 180, 150, 180, 150, 90],
-        fill: 'purple',
-        stroke: 'black',
-        name: "poly",
-        strokeWidth: 1,
-        closed: true,
-        globalCompositeOperation: 'xor',
-        isCorrect: true,
-        visible: true,
-        targetCoors: { x: 350, y: 100 }
-    });
-
-    var polyR1 = new Konva.Line({
-        x: 350,
-        y: 100,
-        points: [0, 0, 0, 150, 90, 150, 180, 0],
-        fill: 'purple',
-        stroke: 'black',
-        name: "poly",
-        strokeWidth: 1,
-        closed: true,
-        globalCompositeOperation: 'xor',
-        visible: false,
-        isCorrect: false,
-        targetCoors: { x: 350, y: 100 }
-    });
-
-    var polyR2 = new Konva.Line({
-        x: 350,
-        y: 100,
-        points: [0, 0, 0, 90, 150, 180, 150, 0],
-        fill: 'purple',
-        stroke: 'black',
-        name: "poly",
-        strokeWidth: 1,
-        closed: true,
-        globalCompositeOperation: 'xor',
-        visible: false,
-        isCorrect: false,
-        targetCoors: { x: 350, y: 100 }
-    });
-
-    var polyR3 = new Konva.Line({
-        x: 350,
-        y: 100,
-        points: [90, 0, 0, 150, 180, 150, 180, 0],
-        fill: 'purple',
-        stroke: 'black',
-        name: "poly",
-        strokeWidth: 1,
-        closed: true,
-        globalCompositeOperation: 'xor',
-        visible: false,
-        isCorrect: false,
-        targetCoors: { x: 350, y: 100 }
-    });
-
-    var poly2 = new Konva.Line({
-        x: 500,
-        y: 100,
-        points: [0, 0, 150, 90, 150, 90, 150, 0],
-        fill: 'orange',
-        stroke: 'black',
-        name: "poly2",
-        strokeWidth: 1,
-        closed: true,
-        globalCompositeOperation: 'xor',
-        isCorrect: true,
-        targetCoors: { x: 500, y: 100 }
-    });
-
-    var poly2R1 = new Konva.Line({
-        x: 500,
-        y: 100,
-        points: [90, 0, 0, 150, 0, 150, 90, 150],
-        fill: 'orange',
-        stroke: 'black',
-        name: "poly2",
-        strokeWidth: 1,
-        closed: true,
-        globalCompositeOperation: 'xor',
-        visible: false,
-        isCorrect: false,
-        targetCoors: { x: 500, y: 100 }
-    });
-
-    var poly2R2 = new Konva.Line({
-        x: 500,
-        y: 100,
-        points: [0, 90, 150, 90, 150, 90, 0, 0],
-        fill: 'orange',
-        stroke: 'black',
-        name: "poly2",
-        strokeWidth: 1,
-        closed: true,
-        globalCompositeOperation: 'xor',
-        visible: false,
-        isCorrect: false,
-        targetCoors: { x: 500, y: 100 }
-    });
-
-    var poly2R3 = new Konva.Line({
-        x: 500,
-        y: 100,
-        points: [0, 0, 0, 150, 0, 150, 90, 0],
-        fill: 'orange',
-        stroke: 'black',
-        name: "poly2",
-        strokeWidth: 1,
-        closed: true,
-        globalCompositeOperation: 'xor',
-        visible: false,
-        isCorrect: false,
-        targetCoors: { x: 500, y: 100 }
-    });
-
-    var poly3 = new Konva.Line({
-        x: 800,
-        y: 100,
-        points: [0, 0, 0, 120, 180, 120, 90, 0],
-        fill: 'green',
-        stroke: 'black',
-        name: "poly3",
-        strokeWidth: 1,
-        closed: true,
-        draggable: true,
-        globalCompositeOperation: 'xor',
-        isCorrect: true,
-        targetCoors: { x: 470, y: 280 }
-    });
-
-    var poly3R1 = new Konva.Line({
-        x: 800,
-        y: 100,
-        points: [0, 0, 0, 180, 120, 90, 120, 0],
-        fill: 'green',
-        stroke: 'black',
-        name: "poly3",
-        strokeWidth: 1,
-        closed: true,
-        draggable: true,
-        globalCompositeOperation: 'xor',
-        visible: false,
-        isCorrect: false,
-        targetCoors: { x: 470, y: 280 }
-    });
-
-    var poly3R2 = new Konva.Line({
-        x: 800,
-        y: 100,
-        points: [0, 0, 90, 120, 180, 120, 180, 0],
-        fill: 'green',
-        stroke: 'black',
-        name: "poly3",
-        strokeWidth: 1,
-        closed: true,
-        draggable: true,
-        globalCompositeOperation: 'xor',
-        visible: false,
-        isCorrect: false,
-        targetCoors: { x: 470, y: 280 }
-    });
-
-    var poly3R3 = new Konva.Line({
-        x: 800,
-        y: 100,
-        points: [0, 90, 0, 180, 120, 180, 120, 0],
-        fill: 'green',
-        stroke: 'black',
-        name: "poly3",
-        strokeWidth: 1,
-        closed: true,
-        draggable: true,
-        globalCompositeOperation: 'xor',
-        visible: false,
-        isCorrect: false,
-        targetCoors: { x: 470, y: 280 }
-    });
-
-    var poly4 = new Konva.Line({
-        x: 560,
-        y: 280,
-        points: [0, 0, 90, 120, 90, 90, 90, 0],
-        fill: 'blue',
-        stroke: 'black',
-        name: "poly4",
-        strokeWidth: 1,
-        closed: true,
-        globalCompositeOperation: 'xor',
-        isCorrect: true,
-        targetCoors: { x: 560, y: 280 }
-    });
-
-    var poly4R1 = new Konva.Line({
-        x: 560,
-        y: 280,
-        points: [0, 90, 0, 90, 120, 90, 120, 0],
-        fill: 'blue',
-        stroke: 'black',
-        name: "poly4",
-        strokeWidth: 1,
-        closed: true,
-        globalCompositeOperation: 'xor',
-        visible: false,
-        isCorrect: false,
-        targetCoors: { x: 560, y: 280 }
-    });
-
-    var poly4R2 = new Konva.Line({
-        x: 560,
-        y: 280,
-        points: [0, 120, 90, 120, 90, 120, 0, 0],
-        fill: 'blue',
-        stroke: 'black',
-        name: "poly4",
-        strokeWidth: 1,
-        closed: true,
-        globalCompositeOperation: 'xor',
-        visible: false,
-        isCorrect: false,
-        targetCoors: { x: 560, y: 280 }
-    });
-
-    var poly4R3 = new Konva.Line({
-        x: 560,
-        y: 280,
-        points: [0, 0, 0, 90, 0, 90, 120, 0],
-        fill: 'blue',
-        stroke: 'black',
-        name: "poly4",
-        strokeWidth: 1,
-        closed: true,
-        globalCompositeOperation: 'xor',
-        visible: false,
-        isCorrect: false,
-        targetCoors: { x: 560, y: 280 }
-    });
-
-    var poly5 = new Konva.Line({
-        x: 700,
-        y: 210,
-        points: [0, 0, 300, 180, 300, 90, 150, 0],
-        fill: 'yellow',
-        stroke: 'black',
-        name: "poly5",
-        strokeWidth: 1,
-        closed: true,
-        draggable: true,
-        globalCompositeOperation: 'xor',
-        isCorrect: true,
-        visible: false,
-        targetCoors: { x: 350, y: 100 }
-    });
-
-    var poly5R1 = new Konva.Line({
-        x: 900,
-        y: 210,
-        points: [0, 300, 90, 300, 180, 150, 180, 0],
-        fill: 'yellow',
-        stroke: 'black',
-        name: "poly5",
-        strokeWidth: 1,
-        closed: true,
-        draggable: true,
-        globalCompositeOperation: 'xor',
-        visible: false,
-        isCorrect: false,
-        targetCoors: { x: 350, y: 100 }
-    });
-
-    var poly5R2 = new Konva.Line({
-        x: 900,
-        y: 210,
-        points: [0, 0, 0, 90, 150, 180, 300, 180],
-        fill: 'yellow',
-        stroke: 'black',
-        name: "poly5",
-        strokeWidth: 1,
-        closed: true,
-        draggable: true,
-        globalCompositeOperation: 'xor',
-        visible: false,
-        isCorrect: false,
-        targetCoors: { x: 350, y: 100 }
-    });
-
-    var poly5R3 = new Konva.Line({
-        x: 900,
-        y: 210,
-        points: [0, 150, 0, 300, 180, 0, 90, 0],
-        fill: 'yellow',
-        stroke: 'black',
-        name: "poly5",
-        strokeWidth: 1,
-        closed: true,
-        draggable: true,
-        globalCompositeOperation: 'xor',
-        isCorrect: false,
-        targetCoors: { x: 350, y: 100 }
-    });
-
-    var poly6 = new Konva.Line({
-        x: 850,
-        y: 250,
-        points: [0, 90, 150, 90, 150, 90, 0, 0],
-        name: "poly6",
-        stroke: 'black',
-        strokeWidth: 1,
-        fill: '#34495E',
-        closed: true,
-        draggable: true,
-        globalCompositeOperation: 'xor',
-        isCorrect: true,
-        visible: false,
-        targetCoors: { x: 500, y: 190 }
-    });
-
-    var poly6R1 = new Konva.Line({
-        x: 750,
-        y: 250,
-        points: [0, 0, 0, 150, 0, 150, 90, 0],
-        name: "poly6",
-        stroke: 'black',
-        strokeWidth: 1,
-        fill: '#34495E',
-        closed: true,
-        draggable: true,
-        globalCompositeOperation: 'xor',
-        visible: false,
-        isCorrect: false,
-        targetCoors: { x: 500, y: 190 }
-    });
-
-    var poly6R2 = new Konva.Line({
-        x: 750,
-        y: 250,
-        points: [0, 0, 150, 90, 150, 90, 150, 0],
-        name: "poly6",
-        stroke: 'black',
-        strokeWidth: 1,
-        fill: '#34495E',
-        closed: true,
-        draggable: true,
-        globalCompositeOperation: 'xor',
-        visible: false,
-        isCorrect: false,
-        targetCoors: { x: 500, y: 190 }
-    });
-
-    var poly6R3 = new Konva.Line({
-        x: 750,
-        y: 250,
-        points: [0, 0, 150, 90, 150, 90, 150, 0],
-        name: "poly6",
-        stroke: 'black',
-        strokeWidth: 1,
-        fill: '#34495E',
-        closed: true,
-        draggable: true,
-        globalCompositeOperation: 'xor',
-        isCorrect: false,
-        targetCoors: { x: 500, y: 190 }
-    });
-
-    var poly7 = new Konva.Line({
-        x: 950,
-        y: 70,
-        points: [0, 0, 0, 120, 120, 120, 120, 0],
-        name: "poly7",
-        stroke: 'black',
-        strokeWidth: 1,
-        fill: '#663300',
-        closed: true,
-        draggable: true,
-        globalCompositeOperation: 'xor',
-        isSquare: true,
-        isCorrect: true,
-        targetCoors: { x: 350, y: 280 }
-    });
-
-    shapes.push(poly, polyR1, polyR2,
-        polyR3, poly2, poly2R1,
-        poly2R2, poly2R3, poly3, poly3R1, poly3R2, poly3R3,
-        poly4, poly4R1, poly4R2, poly4R3,
-        poly5, poly5R1, poly5R2, poly5R3, poly6, poly6R1, poly6R2, poly6R3, poly7);
-
-    var prevSelectedShape = "";
-    var shapeRotate = new Konva.Line();
-    var checkSelected = false;
-    var checkComplete = false;
-    var timeIsOver = false;
-    var rotateShapes = [];
-
-    snapToWall(rect, 20);
+    setShapes(game2);
+    snapToWall(targetShape, 20);
     snapToAll(5);
-    autoAddShapes(shapes, rect);
+    autoAddShapes(shapes, targetShape);
     loadStyle();
     setSeatedShapes(shapes);
     checkCompleted();
-    checkGameTime(20, rect);
+    checkGameTime(40, targetShape);
+
+    function setShapes(gameName) {
+        const game = Object.keys(gameName).map(function (key) {
+            return [(key), gameName[key]];
+        });
+
+        for (let i = 0; i < game.length; i++) {
+
+            if (!game[i][1].isTarget) {
+                var shape = new Konva.Line({
+                    x: game[i][1].x,
+                    y: game[i][1].y,
+                    points: game[i][1].points,
+                    fill: game[i][1].fill,
+                    stroke: game[i][1].stroke,
+                    name: game[i][1].name,
+                    strokeWidth: game[i][1].strokeWidth,
+                    closed: game[i][1].closed,
+                    globalCompositeOperation: game[i][1].globalCompositeOperation,
+                    isCorrect: game[i][1].isCorrect,
+                    visible: game[i][1].visible,
+                    isSquare: game[i][1].isSquare,
+                    targetCoors: game[i][1].targetCoors,
+                    isTarget: game[i][1].isTarget,
+                    draggable: game[i][1].draggable
+                });
+
+                shapes.push(shape);
+            }
+            else {
+                var target = new Konva.Line({
+                    x: game[i][1].x,
+                    y: game[i][1].y,
+                    points: game[i][1].points,
+                    fill: game[i][1].fill,
+                    stroke: game[i][1].stroke,
+                    name: game[i][1].name,
+                    strokeWidth: game[i][1].strokeWidth,
+                    closed: game[i][1].closed,
+                    globalCompositeOperation: game[i][1].globalCompositeOperation,
+                    isCorrect: game[i][1].isCorrect,
+                    visible: game[i][1].visible,
+                    isSquare: game[i][1].isSquare,
+                    targetCoors: game[i][1].targetCoors,
+                    isTarget: game[i][1].isTarget,
+                    draggable: game[i][1].draggable
+                });
+
+                targetShape = target;
+            }
+        }
+    }
 
     function setSeatedShapes(shapes) {
         shapes.forEach(function (shape) {
@@ -619,6 +272,9 @@ $(document).ready(function () {
                 var checkDraggable = shape.draggable();
                 var checkCorrect = shape.attrs.isCorrect;
 
+                console.log("X--> " + currentX);
+                console.log("Y--> " + currentY);
+
                 if (targetX == currentX && targetY == currentY && checkCorrect && checkDraggable) {
                     for (var i = 0; i < seatedCorrectShapes.length; i++) {
                         if (seatedCorrectShapes[i] == shape) {
@@ -654,7 +310,7 @@ $(document).ready(function () {
     }
 
     function checkGameTime(gameTime, targetShape) {
-        var timeLimit = gameTime / 4;
+        var timeLimit = gameTime / 3;
         var warningLimit = 1;
 
         var timer = setInterval(function () {
@@ -663,7 +319,7 @@ $(document).ready(function () {
             if (gameTime <= timeLimit && !checkComplete) {
                 targetShape.stroke("red");
                 targetShape.strokeWidth(warningLimit);
-                layer.draw();
+                layer.batchDraw();
                 warningLimit++;
 
                 if (gameTime == 0) {
@@ -749,7 +405,7 @@ $(document).ready(function () {
                 rotateShapes[i].hide();
             }
 
-            if (rotateClick == 3) {
+            if (rotateClick == rotateShapes.length - 1) {
                 rotateClick = -1;
             }
 
@@ -761,6 +417,13 @@ $(document).ready(function () {
         }
 
         return;
+
+        // var rotate = 90;
+        // shapeRotate.offsetX(shapeRotate.width() / 2);
+        // shapeRotate.offsetY(shapeRotate.height() / 2);
+
+        // shapeRotate.rotate(rotate);
+        // layer.draw();
     });
 
     //çalıştırılan tarayıcının explorer olup olmaması kontrol edilir.
