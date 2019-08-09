@@ -28,7 +28,7 @@ $(document).ready(function () {
     loadStyle();
     setSeatedShapes(shapes);
     checkCompleted();
-    checkGameTime(40, targetShape);
+    checkGameTime(30);
 
     function setShapes(gameName) {
         const game = Object.keys(gameName).map(function (key) {
@@ -90,21 +90,27 @@ $(document).ready(function () {
         });
     }
 
+    Array.prototype.diff = function (a) {
+        return this.filter(function (i) { return a.indexOf(i) < 0; });
+    };
+
     function loadStyle() {
         if (!checkIE()) {
             stage.container().style = "filter:drop-shadow(2px 30px 6px gray);";
         }
 
         shapes.forEach(function (shape) {
-            shape.shadowForStrokeEnabled(false);
+            if (shape.draggable()) {
+                shape.shadowForStrokeEnabled(false);
 
-            shape.on('mouseenter', function () {
-                stage.container().style.cursor = 'pointer';
-            });
+                shape.on('mouseenter', function () {
+                    stage.container().style.cursor = 'url("https://downloads.totallyfreecursors.com/thumbnails/diamondblue.gif"), auto';
+                });
 
-            shape.on('mouseleave', function () {
-                stage.container().style.cursor = 'default';
-            });
+                shape.on('mouseleave', function () {
+                    stage.container().style.cursor = 'default';
+                });
+            }
         });
     }
 
@@ -197,6 +203,11 @@ $(document).ready(function () {
     function snapToAll(tolerance) {
         shapes.forEach(function (snapShape) {
             snapShape.on('dragend', function () {
+                clearPrevSelected(snapShape);
+                shapeRotate = new Konva.Line();
+                prevSelectedShape = new Konva.Line();
+                rotateShapes = [];
+
                 var shapePoints = snapShape.points();
 
                 for (var i = 0; i < shapePoints.length / 2; i++) {
@@ -210,6 +221,11 @@ $(document).ready(function () {
     function snapToWall(targetSnapShape, tolerance) {
         shapes.forEach(function (snapShape) {
             snapShape.on('dragend', function () {
+                clearPrevSelected(snapShape);
+                shapeRotate = new Konva.Line();
+                prevSelectedShape = new Konva.Line();
+                rotateShapes = [];
+
                 var shapePoints = snapShape.points();
 
                 for (var i = 0; i < shapePoints.length / 2; i++) {
@@ -309,19 +325,11 @@ $(document).ready(function () {
         });
     }
 
-    function checkGameTime(gameTime, targetShape) {
-        var timeLimit = gameTime / 3;
-        var warningLimit = 1;
-
+    function checkGameTime(gameTime) {
         var timer = setInterval(function () {
             gameTime--;
 
-            if (gameTime <= timeLimit && !checkComplete) {
-                targetShape.stroke("red");
-                targetShape.strokeWidth(warningLimit);
-                layer.batchDraw();
-                warningLimit++;
-
+            if (!checkComplete) {
                 if (gameTime == 0) {
                     clearInterval(timer);
                     timeIsOver = true;
@@ -410,7 +418,7 @@ $(document).ready(function () {
             }
 
             rotateShapes[rotateClick + 1].setAttr('x', currentX);
-            rotateShapes[rotateClick + 1].setAttr('y', currentY);
+            rotateShapes[rotateClick + 1].setAttr('y', currentY);   
             rotateShapes[rotateClick + 1].show();
             layer.batchDraw();
             rotateClick++;
