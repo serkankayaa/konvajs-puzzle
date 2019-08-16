@@ -21,14 +21,14 @@ $(document).ready(function () {
 
     var layer = new Konva.Layer();
 
-    setShapes(game2);
+    setShapes(game3);
     snapToWall(targetShape, 20);
     snapToAll(5);
     autoAddShapes(shapes, targetShape);
     loadStyle();
     setSeatedShapes(shapes);
     checkCompleted();
-    checkGameTime(30);
+    checkGameTime(40);
 
     function setShapes(gameName) {
         const game = Object.keys(gameName).map(function (key) {
@@ -57,8 +57,7 @@ $(document).ready(function () {
                 });
 
                 shapes.push(shape);
-            }
-            else {
+            } else {
                 var target = new Konva.Line({
                     x: game[i][1].x,
                     y: game[i][1].y,
@@ -89,10 +88,6 @@ $(document).ready(function () {
             }
         });
     }
-
-    Array.prototype.diff = function (a) {
-        return this.filter(function (i) { return a.indexOf(i) < 0; });
-    };
 
     function loadStyle() {
         if (!checkIE()) {
@@ -304,10 +299,8 @@ $(document).ready(function () {
                     if (shapeCount == seatedCount) {
                         checkComplete = true;
                         alert("oyun bitti tebrikler");
-                        window.location.reload();
                     }
-                }
-                else {
+                } else {
                     for (var i = 0; i < seatedCorrectShapes.length; i++) {
                         if (seatedCorrectShapes[i] == shape) {
                             seatedCount--;
@@ -326,18 +319,39 @@ $(document).ready(function () {
     }
 
     function checkGameTime(gameTime) {
+        var circleTime = $(".time").text();
+        var greenDestTime = gameTime / 1.5;
+        var warningLimit = 1;
+
         var timer = setInterval(function () {
             gameTime--;
+            circleTime++;
+            $(".time").html(circleTime);
 
             if (!checkComplete) {
+                if (greenDestTime < circleTime) {
+                    warningLimit++;
+                    $('.time').fadeIn("slow");
+
+                    $('.time').css({
+                        "border-color": "red",
+                        "border-width": warningLimit / 2,
+                        "border-style": "solid"
+                    });
+
+                    $('.time').fadeOut("slow");
+                }
+
                 if (gameTime == 0) {
                     clearInterval(timer);
                     timeIsOver = true;
+                    $('.time').fadeIn("slow");
                     alert("süre doldu zamanında çözemediniz.");
                     layer.draw();
                     window.location.reload();
-                    return;
                 }
+            } else {
+                clearInterval(timer);
             }
 
         }, 1000);
@@ -418,7 +432,7 @@ $(document).ready(function () {
             }
 
             rotateShapes[rotateClick + 1].setAttr('x', currentX);
-            rotateShapes[rotateClick + 1].setAttr('y', currentY);   
+            rotateShapes[rotateClick + 1].setAttr('y', currentY);
             rotateShapes[rotateClick + 1].show();
             layer.batchDraw();
             rotateClick++;

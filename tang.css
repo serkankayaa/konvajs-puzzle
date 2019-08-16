@@ -6,12 +6,13 @@ body {
     background: url('img/game_background_1.png');
 }
 
-#buttons {
+#elements {
     position: absolute;
     top: 5px;
     left: 10px;
 }
-#buttons > button {
+
+#elements>button {
     padding: 10px;
     display: inline-block;
     margin-right: 5px;
@@ -37,4 +38,17 @@ body {
 
 #btnRotate:focus {
     outline: 0;
+}
+
+.time {
+    width: 90px;
+    height: 90px;
+    border-radius: 250px;
+    font-size: 50px;
+    color: black;
+    line-height: 90px;
+    text-align: center;
+    background: darkorange;
+    position: absolute;
+    margin: 50px;
 }

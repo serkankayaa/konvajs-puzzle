@@ -899,3 +899,6 @@ var game1 = game1Medium;
 var game2 = game2Medium;
 var game3 = game3Medium;
 var game4 = game1Easy;
+var games = [];
+
+games.push(game1, game2, game3, game4);
