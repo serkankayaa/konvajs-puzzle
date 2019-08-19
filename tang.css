@@ -41,14 +41,15 @@ body {
 }
 
 .time {
-    width: 90px;
-    height: 90px;
+    width: 65px;
+    height: 65px;
     border-radius: 250px;
-    font-size: 50px;
+    font-size: 35px;
     color: black;
-    line-height: 90px;
+    line-height: 65px;
     text-align: center;
     background: darkorange;
     position: absolute;
-    margin: 50px;
+    margin-left: 450px;
+    margin-top: 10px;
 }
