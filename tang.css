@@ -51,5 +51,6 @@ body {
     background: darkorange;
     position: absolute;
     margin-left: 450px;
+    border: 2px solid greenyellow;
     margin-top: 10px;
 }

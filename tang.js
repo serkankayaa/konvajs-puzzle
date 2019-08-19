@@ -12,6 +12,7 @@ $(document).ready(function () {
     var checkComplete = false;
     var timeIsOver = false;
     var rotateShapes = [];
+    var time = 1;
 
     var stage = new Konva.Stage({
         container: 'container',
@@ -319,6 +320,8 @@ $(document).ready(function () {
     }
 
     function checkGameTime(gameTime) {
+        $(".time").html(time);
+
         var circleTime = $(".time").text();
         var greenDestTime = gameTime / 1.5;
         var warningLimit = 1;
@@ -345,7 +348,7 @@ $(document).ready(function () {
                 if (gameTime == 0) {
                     clearInterval(timer);
                     timeIsOver = true;
-                    $('.time').fadeIn("slow");
+                    $(".time").css({ opacity: 'none' });
                     alert("süre doldu zamanında çözemediniz.");
                     layer.draw();
                     window.location.reload();
