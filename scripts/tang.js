@@ -200,9 +200,9 @@ $(document).ready(function () {
         shapes.forEach(function (snapShape) {
             snapShape.on('dragend', function () {
                 clearPrevSelected(snapShape);
-                shapeRotate = new Konva.Line();
-                prevSelectedShape = new Konva.Line();
-                rotateShapes = [];
+                // shapeRotate = new Konva.Line();
+                // prevSelectedShape = new Konva.Line();
+                // rotateShapes = [];
 
                 var shapePoints = snapShape.points();
 
@@ -218,9 +218,9 @@ $(document).ready(function () {
         shapes.forEach(function (snapShape) {
             snapShape.on('dragend', function () {
                 clearPrevSelected(snapShape);
-                shapeRotate = new Konva.Line();
-                prevSelectedShape = new Konva.Line();
-                rotateShapes = [];
+                // shapeRotate = new Konva.Line();
+                // prevSelectedShape = new Konva.Line();
+                // rotateShapes = [];
 
                 var shapePoints = snapShape.points();
 
@@ -277,15 +277,18 @@ $(document).ready(function () {
 
         shapes.forEach(function (shape) {
             shape.on('dragend', function () {
+                shape.to({
+                    duration: 0.5,
+                    easing: Konva.Easings.ElasticEaseOut,
+                    shadowOffsetX: 5,
+                    shadowOffsetY: 5
+                  });
                 var currentX = shape.getAbsolutePosition().x;
                 var currentY = shape.getAbsolutePosition().y;
                 var targetX = shape.attrs.targetCoors.x;
                 var targetY = shape.attrs.targetCoors.y;
                 var checkDraggable = shape.draggable();
                 var checkCorrect = shape.attrs.isCorrect;
-
-                console.log("X--> " + currentX);
-                console.log("Y--> " + currentY);
 
                 if (targetX == currentX && targetY == currentY && checkCorrect && checkDraggable) {
                     for (var i = 0; i < seatedCorrectShapes.length; i++) {
