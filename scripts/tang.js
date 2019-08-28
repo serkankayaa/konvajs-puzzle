@@ -29,7 +29,7 @@ $(document).ready(function () {
     loadStyle();
     setSeatedShapes(shapes);
     checkCompleted();
-    checkGameTime(40);
+    checkGameTime(60);
 
     function setShapes(gameName) {
         const game = Object.keys(gameName).map(function (key) {
