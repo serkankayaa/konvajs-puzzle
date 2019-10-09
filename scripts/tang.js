@@ -124,8 +124,11 @@ $(document).ready(function () {
     }
 
     function loadStyle() {
-        if (!checkIE()) {
+        if (!checkIE() && !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
             stage.container().style = "filter:drop-shadow(2px 30px 6px gray);";
+        }
+        else {
+            stage.container().style = "";
         }
 
         shapes.forEach(function (shape) {
