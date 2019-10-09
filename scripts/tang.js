@@ -55,7 +55,10 @@ $(document).ready(function () {
                     isTarget: game[i][1].isTarget,
                     draggable: game[i][1].draggable,
                     perfectDrawEnabled: false,
-                    transformsEnabled : 'position'
+                    transformsEnabled : 'position',
+                    listening: false,
+                    hitStrokeWidth : 0,
+                    shadowForStrokeEnabled: false
                 });
 
                 targetShape = target;
@@ -78,7 +81,9 @@ $(document).ready(function () {
                     isTarget: game[i][1].isTarget,
                     draggable: game[i][1].draggable,
                     perfectDrawEnabled: false,
-                    transformsEnabled : 'position'
+                    transformsEnabled : 'position',
+                    hitStrokeWidth : 0,
+                    shadowForStrokeEnabled: false
                 });
 
                 shapes.push(seatedShape);
@@ -100,7 +105,9 @@ $(document).ready(function () {
                     isTarget: game[i][1].isTarget,
                     draggable: game[i][1].draggable,
                     perfectDrawEnabled: false,
-                    transformsEnabled : 'position'
+                    transformsEnabled : 'position',
+                    hitStrokeWidth : 0,
+                    shadowForStrokeEnabled: false
                 });
 
                 shapes.push(draggableShape);
@@ -118,7 +125,7 @@ $(document).ready(function () {
 
     function loadStyle() {
         if (!checkIE()) {
-            stage.container().style = "filter:drop-shadow(2px 30px 6px gray);";
+            // stage.container().style = "filter:drop-shadow(2px 30px 6px gray);";
         }
 
         shapes.forEach(function (shape) {
