@@ -53,7 +53,8 @@ $(document).ready(function () {
                     isSquare: game[i][1].isSquare,
                     targetCoors: game[i][1].targetCoors,
                     isTarget: game[i][1].isTarget,
-                    draggable: game[i][1].draggable
+                    draggable: game[i][1].draggable,
+                    perfectDrawEnabled: false
                 });
 
                 targetShape = target;
@@ -74,7 +75,8 @@ $(document).ready(function () {
                     isSquare: game[i][1].isSquare,
                     targetCoors: game[i][1].targetCoors,
                     isTarget: game[i][1].isTarget,
-                    draggable: game[i][1].draggable
+                    draggable: game[i][1].draggable,
+                    perfectDrawEnabled: false
                 });
 
                 shapes.push(seatedShape);
@@ -94,7 +96,8 @@ $(document).ready(function () {
                     isSquare: game[i][1].isSquare,
                     targetCoors: game[i][1].targetCoors,
                     isTarget: game[i][1].isTarget,
-                    draggable: game[i][1].draggable
+                    draggable: game[i][1].draggable,
+                    perfectDrawEnabled: false
                 });
 
                 shapes.push(draggableShape);
@@ -383,7 +386,7 @@ $(document).ready(function () {
                     timeIsOver = true;
                     $(".time").css({ opacity: 'none' });
                     alert("süre doldu zamanında çözemediniz.");
-                    layer.draw();
+                    layer.batchDraw();
                     window.location.reload();
                 }
             } else {
@@ -474,7 +477,7 @@ $(document).ready(function () {
             rotateShapes[rotateClick + 1].setAttr('x', currentX);
             rotateShapes[rotateClick + 1].setAttr('y', currentY);
             rotateShapes[rotateClick + 1].show();
-            layer.draw();
+            layer.batchDraw();
 
             rotateClick++;
         }
