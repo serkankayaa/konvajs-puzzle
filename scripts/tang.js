@@ -22,14 +22,14 @@ $(document).ready(function () {
 
     var layer = new Konva.Layer();
 
-    setShapes(game3);
+    setShapes(game1);
     snapToWall(targetShape, 20);
     snapToAll(5);
     autoAddShapes(shapes, targetShape);
     loadStyle();
     setSeatedShapes(shapes);
     checkCompleted();
-    checkGameTime(60);
+    checkGameTime(500000);
 
     function setShapes(gameName) {
         const game = Object.keys(gameName).map(function (key) {
@@ -37,28 +37,7 @@ $(document).ready(function () {
         });
 
         for (let i = 0; i < game.length; i++) {
-
-            if (!game[i][1].isTarget) {
-                var shape = new Konva.Line({
-                    x: game[i][1].x,
-                    y: game[i][1].y,
-                    points: game[i][1].points,
-                    fill: game[i][1].fill,
-                    stroke: game[i][1].stroke,
-                    name: game[i][1].name,
-                    strokeWidth: game[i][1].strokeWidth,
-                    closed: game[i][1].closed,
-                    globalCompositeOperation: game[i][1].globalCompositeOperation,
-                    isCorrect: game[i][1].isCorrect,
-                    visible: game[i][1].visible,
-                    isSquare: game[i][1].isSquare,
-                    targetCoors: game[i][1].targetCoors,
-                    isTarget: game[i][1].isTarget,
-                    draggable: game[i][1].draggable
-                });
-
-                shapes.push(shape);
-            } else {
+            if (game[i][1].isTarget) {
                 var target = new Konva.Line({
                     x: game[i][1].x,
                     y: game[i][1].y,
@@ -79,6 +58,47 @@ $(document).ready(function () {
 
                 targetShape = target;
             }
+            else if (!game[i][1].isTarget && !game[i][1].draggable) {
+                var seatedShape = new Konva.Line({
+                    x: game[i][1].x + targetShape.x(),
+                    y: game[i][1].y + targetShape.y(),
+                    points: game[i][1].points,
+                    fill: game[i][1].fill,
+                    stroke: game[i][1].stroke,
+                    name: game[i][1].name,
+                    strokeWidth: game[i][1].strokeWidth,
+                    closed: game[i][1].closed,
+                    globalCompositeOperation: game[i][1].globalCompositeOperation,
+                    isCorrect: game[i][1].isCorrect,
+                    visible: game[i][1].visible,
+                    isSquare: game[i][1].isSquare,
+                    targetCoors: game[i][1].targetCoors,
+                    isTarget: game[i][1].isTarget,
+                    draggable: game[i][1].draggable
+                });
+
+                shapes.push(seatedShape);
+            } else if(!game[i][1].isTarget && game[i][1].draggable) {
+                var draggableShape = new Konva.Line({
+                    x: game[i][1].x + targetShape.x(),
+                    y: game[i][1].y + targetShape.y(),
+                    points: game[i][1].points,
+                    fill: game[i][1].fill,
+                    stroke: game[i][1].stroke,
+                    name: game[i][1].name,
+                    strokeWidth: game[i][1].strokeWidth,
+                    closed: game[i][1].closed,
+                    globalCompositeOperation: game[i][1].globalCompositeOperation,
+                    isCorrect: game[i][1].isCorrect,
+                    visible: game[i][1].visible,
+                    isSquare: game[i][1].isSquare,
+                    targetCoors: game[i][1].targetCoors,
+                    isTarget: game[i][1].isTarget,
+                    draggable: game[i][1].draggable
+                });
+
+                shapes.push(draggableShape);
+            }            
         }
     }
 
@@ -107,6 +127,12 @@ $(document).ready(function () {
                     stage.container().style.cursor = 'default';
                 });
             }
+        });
+
+        var widthRate = window.innerWidth / 96 + "%";
+
+        $('#container').css({
+            'margin-left' : widthRate,
         });
     }
 
@@ -302,6 +328,8 @@ $(document).ready(function () {
 
                     if (shapeCount == seatedCount) {
                         checkComplete = true;
+                        var finishedTime = $(".time").text();
+                        console.log(finishedTime);
                         alert("oyun bitti tebrikler");
                     }
                 } else {
@@ -324,7 +352,7 @@ $(document).ready(function () {
 
     function checkGameTime(gameTime) {
         $(".time").html(time);
-
+        time = gameTime;
         var circleTime = $(".time").text();
         var greenDestTime = gameTime / 1.5;
         var warningLimit = 1;
