@@ -54,7 +54,8 @@ $(document).ready(function () {
                     targetCoors: game[i][1].targetCoors,
                     isTarget: game[i][1].isTarget,
                     draggable: game[i][1].draggable,
-                    perfectDrawEnabled: false
+                    perfectDrawEnabled: false,
+                    transformsEnabled : 'position'
                 });
 
                 targetShape = target;
@@ -76,7 +77,8 @@ $(document).ready(function () {
                     targetCoors: game[i][1].targetCoors,
                     isTarget: game[i][1].isTarget,
                     draggable: game[i][1].draggable,
-                    perfectDrawEnabled: false
+                    perfectDrawEnabled: false,
+                    transformsEnabled : 'position'
                 });
 
                 shapes.push(seatedShape);
@@ -97,7 +99,8 @@ $(document).ready(function () {
                     targetCoors: game[i][1].targetCoors,
                     isTarget: game[i][1].isTarget,
                     draggable: game[i][1].draggable,
-                    perfectDrawEnabled: false
+                    perfectDrawEnabled: false,
+                    transformsEnabled : 'position'
                 });
 
                 shapes.push(draggableShape);
