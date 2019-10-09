@@ -125,7 +125,7 @@ $(document).ready(function () {
 
     function loadStyle() {
         if (!checkIE()) {
-            // stage.container().style = "filter:drop-shadow(2px 30px 6px gray);";
+            stage.container().style = "filter:drop-shadow(2px 30px 6px gray);";
         }
 
         shapes.forEach(function (shape) {
