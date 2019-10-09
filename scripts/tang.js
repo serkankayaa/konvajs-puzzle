@@ -143,6 +143,8 @@ $(document).ready(function () {
         });
 
         stage.add(layer);
+
+        Konva.pixelRatio = 1;
     }
 
     //Snap Shapes Method
