@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     var width = window.innerWidth;
     var height = window.innerHeight;
     var shapes = [];
@@ -13,6 +12,7 @@ $(document).ready(function () {
     var timeIsOver = false;
     var rotateShapes = [];
     var time = 1;
+    var doorImagePath = '../img/kapi.png';
 
     var stage = new Konva.Stage({
         container: 'container',
@@ -22,14 +22,46 @@ $(document).ready(function () {
 
     var layer = new Konva.Layer();
 
+    setDoor();
     setShapes(game1);
     snapToWall(targetShape, 20);
     snapToAll(5);
-    autoAddShapes(shapes, targetShape);
+    // autoAddShapes(shapes, targetShape);
     loadStyle();
     setSeatedShapes(shapes);
     checkCompleted();
     checkGameTime(500000);
+
+    function setDoor() {
+        var madalyon = new Konva.Line({
+            x: 100,
+            y: 200,
+            points: [0, 146, 76, 292, 222, 292, 213, 146, 222, 0, 76, 0],
+            name: "poly7",
+            fill: 'white',
+            closed: true,
+            draggable: true
+        });
+
+        var imageObj = new Image();
+        imageObj.onload = function () {
+            var tangramDoor = new Konva.Image({
+                x: 50,
+                y: 50,
+                image: imageObj,
+            });
+
+            layer.add(tangramDoor);
+            layer.add(madalyon);
+            tangramDoor.moveToBottom();
+
+            layer.batchDraw();
+
+            stage.add(layer);
+        };
+
+        imageObj.src = doorImagePath;
+    }
 
     function setShapes(gameName) {
         const game = Object.keys(gameName).map(function (key) {
@@ -55,9 +87,9 @@ $(document).ready(function () {
                     isTarget: game[i][1].isTarget,
                     draggable: game[i][1].draggable,
                     perfectDrawEnabled: false,
-                    transformsEnabled : 'position',
+                    transformsEnabled: 'position',
                     listening: false,
-                    hitStrokeWidth : 0,
+                    hitStrokeWidth: 0,
                     shadowForStrokeEnabled: false
                 });
 
@@ -81,13 +113,13 @@ $(document).ready(function () {
                     isTarget: game[i][1].isTarget,
                     draggable: game[i][1].draggable,
                     perfectDrawEnabled: false,
-                    transformsEnabled : 'position',
-                    hitStrokeWidth : 0,
+                    transformsEnabled: 'position',
+                    hitStrokeWidth: 0,
                     shadowForStrokeEnabled: false
                 });
 
                 shapes.push(seatedShape);
-            } else if(!game[i][1].isTarget && game[i][1].draggable) {
+            } else if (!game[i][1].isTarget && game[i][1].draggable) {
                 var draggableShape = new Konva.Line({
                     x: game[i][1].x + targetShape.x(),
                     y: game[i][1].y + targetShape.y(),
@@ -105,13 +137,13 @@ $(document).ready(function () {
                     isTarget: game[i][1].isTarget,
                     draggable: game[i][1].draggable,
                     perfectDrawEnabled: false,
-                    transformsEnabled : 'position',
-                    hitStrokeWidth : 0,
+                    transformsEnabled: 'position',
+                    hitStrokeWidth: 0,
                     shadowForStrokeEnabled: false
                 });
 
                 shapes.push(draggableShape);
-            }            
+            }
         }
     }
 
@@ -148,7 +180,7 @@ $(document).ready(function () {
         var widthRate = window.innerWidth / 96 + "%";
 
         $('#container').css({
-            'margin-left' : widthRate,
+            'margin-left': widthRate,
         });
     }
 
@@ -326,7 +358,7 @@ $(document).ready(function () {
                     easing: Konva.Easings.ElasticEaseOut,
                     shadowOffsetX: 5,
                     shadowOffsetY: 5
-                  });
+                });
                 var currentX = shape.getAbsolutePosition().x;
                 var currentY = shape.getAbsolutePosition().y;
                 var targetX = shape.attrs.targetCoors.x;
