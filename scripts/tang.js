@@ -4,7 +4,8 @@ $(document).ready(function () {
     var shapes = [];
     var seatedShapes = [];
     var rotateClick = 0;
-    var targetShape;
+    var hexagon;
+    var gameTargetShape;
     var prevSelectedShape = "";
     var shapeRotate = new Konva.Line();
     var checkSelected = false;
@@ -24,9 +25,9 @@ $(document).ready(function () {
 
     setDoor();
     setShapes(game1);
-    snapToWall(targetShape, 20);
+    snapToWall(gameTargetShape, 15);
     snapToAll(5);
-    // autoAddShapes(shapes, targetShape);
+    autoAddShapes(shapes, hexagon);
     loadStyle();
     setSeatedShapes(shapes);
     checkCompleted();
@@ -34,9 +35,9 @@ $(document).ready(function () {
 
     function setDoor() {
         var madalyon = new Konva.Line({
-            x: 100,
-            y: 200,
-            points: [0, 146, 76, 292, 222, 292, 213, 146, 222, 0, 76, 0],
+            x: 393,
+            y: 104,
+            points: [5, 146, 76, 283, 234, 283, 305, 145, 234, 10, 76, 10],
             name: "poly7",
             fill: 'white',
             closed: true,
@@ -55,13 +56,18 @@ $(document).ready(function () {
             layer.add(madalyon);
             tangramDoor.moveToBottom();
 
-            layer.batchDraw();
-
             stage.add(layer);
+            layer.batchDraw();
         };
 
         imageObj.src = doorImagePath;
+
+        hexagon = madalyon;
     }
+
+    layer.on('dragend', function (e) {
+        console.log(e);
+    });
 
     function setShapes(gameName) {
         const game = Object.keys(gameName).map(function (key) {
@@ -93,12 +99,13 @@ $(document).ready(function () {
                     shadowForStrokeEnabled: false
                 });
 
-                targetShape = target;
+                gameTargetShape = target;
+                shapes.push(gameTargetShape);
             }
             else if (!game[i][1].isTarget && !game[i][1].draggable) {
                 var seatedShape = new Konva.Line({
-                    x: game[i][1].x + targetShape.x(),
-                    y: game[i][1].y + targetShape.y(),
+                    x: game[i][1].x,
+                    y: game[i][1].y,
                     points: game[i][1].points,
                     fill: game[i][1].fill,
                     stroke: game[i][1].stroke,
@@ -121,8 +128,8 @@ $(document).ready(function () {
                 shapes.push(seatedShape);
             } else if (!game[i][1].isTarget && game[i][1].draggable) {
                 var draggableShape = new Konva.Line({
-                    x: game[i][1].x + targetShape.x(),
-                    y: game[i][1].y + targetShape.y(),
+                    x: game[i][1].x + gameTargetShape.x(),
+                    y: game[i][1].y + gameTargetShape.y(),
                     points: game[i][1].points,
                     fill: game[i][1].fill,
                     stroke: game[i][1].stroke,
@@ -145,6 +152,18 @@ $(document).ready(function () {
                 shapes.push(draggableShape);
             }
         }
+
+        shapes.forEach(shape => {
+            if (shape.attrs.name == 'leftSide') {
+                shape.moveToBottom();
+                layer.draw();
+            }
+
+            if (shape.attrs.name == 'rightSide') {
+                shape.moveToBottom();
+                layer.draw();
+            }
+        });
     }
 
     function setSeatedShapes(shapes) {
@@ -184,8 +203,8 @@ $(document).ready(function () {
         });
     }
 
-    function autoAddShapes(shapes, rect) {
-        layer.add(rect);
+    function autoAddShapes(shapes, hexagon) {
+        layer.add(hexagon);
         shapes.forEach(function (element) {
             layer.add(element);
         });
@@ -290,18 +309,19 @@ $(document).ready(function () {
     }
 
     //Şekiller duvara snapleniyor.
-    function snapToWall(targetSnapShape, tolerance) {
+    function snapToWall(targetShape, tolerance) {
         shapes.forEach(function (snapShape) {
             snapShape.on('dragend', function () {
-                clearPrevSelected(snapShape);
-                // shapeRotate = new Konva.Line();
-                // prevSelectedShape = new Konva.Line();
-                // rotateShapes = [];
+                if (snapShape.attrs.draggable) {
+                    clearPrevSelected(snapShape);
+                    // shapeRotate = new Konva.Line();
+                    // prevSelectedShape = new Konva.Line();
+                    // rotateShapes = [];
 
-                var shapePoints = snapShape.points();
-
-                for (var i = 0; i < shapePoints.length / 2; i++) {
-                    checkSnapTarget(shapePoints[2 * i], shapePoints[2 * i + 1], snapShape, targetSnapShape, tolerance);
+                    var shapePoints = snapShape.points();
+                    for (var i = 0; i < shapePoints.length / 2; i++) {
+                        checkSnapTarget(shapePoints[2 * i], shapePoints[2 * i + 1], snapShape, targetShape, tolerance);
+                    }
                 }
             });
         });
@@ -320,7 +340,7 @@ $(document).ready(function () {
     }
 
     function clearPrevSelected(selected) {
-        selected.stroke("black");
+        selected.stroke("#A2195F");
         selected.strokeWidth(1);
         layer.batchDraw();
     }
@@ -379,7 +399,6 @@ $(document).ready(function () {
                     if (shapeCount == seatedCount) {
                         checkComplete = true;
                         var finishedTime = $(".time").text();
-                        console.log(finishedTime);
                         alert("oyun bitti tebrikler");
                     }
                 } else {
@@ -500,7 +519,6 @@ $(document).ready(function () {
     });
 
     $('#btnRotate').click(function () {
-
         if (shapeRotate.attrs.isSquare) {
             return;
         }
@@ -516,8 +534,8 @@ $(document).ready(function () {
                 rotateClick = -1;
             }
 
-            console.log(shapeRotate._id);
-            console.log(rotateShapes[rotateClick + 1]._id);
+            // console.log(shapeRotate._id);
+            // console.log(rotateShapes[rotateClick + 1]._id);
 
             rotateShapes[rotateClick + 1].setAttr('x', currentX);
             rotateShapes[rotateClick + 1].setAttr('y', currentY);

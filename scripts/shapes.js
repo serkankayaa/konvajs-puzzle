@@ -1,4 +1,92 @@
-const game1Medium = {
+const game1Easy = {
+    gameTarget: ({
+        x: 488,
+        y: 223,
+        points: [0, 0, 0, 54, 62, 54, 115, 26, 62, 0],
+        name: 'target',
+        fill: 'white',
+        closed: true,
+        draggable: false,
+        isTarget: true
+    }),
+    leftSide:({
+        x: 393,
+        y: 104,
+        points: [5, 146, 76, 283, 155, 283, 155, 173, 95, 173, 95, 119, 155, 119, 155, 10, 76, 10],
+        name: 'leftSide',
+        fill: '#A2195F',
+        closed: true,
+        draggable: false
+    }),
+    rightSide:({
+        x: 393,
+        y: 104,
+        points: [155, 10, 155, 119, 205, 145, 155, 173, 155, 283, 234, 283, 305, 145, 234, 10],
+        name: 'rightSide',
+        fill: '#A2195F',
+        closed: true,
+        draggable: false
+    }),
+    poly: ({
+        x: 100,
+        y: 300,
+        points: [0, 0, 0, 54, 62, 54, 62, 0],
+        fill: '#A2195F',
+        name: 'poly',
+        closed: true,
+        draggable: true,
+        isSquare: true,
+        isCorrect: true,
+        targetCoors: {x: 488, y: 223}
+    }),
+    poly2: ({
+        x: -80,
+        y: 300,
+        points: [0, 0, 0, 54, 53, 26, 0, 0],
+        fill: '#A2195F',
+        name: 'poly2',
+        closed: true,
+        draggable: true,
+        isCorrect: true,
+        targetCoors: {x: 550, y: 223},
+        visible: false
+    }),
+    poly2R1: ({
+        x: -80,
+        y: 300,
+        points: [0, 0, 26, 53, 54, 0, 0, 0],
+        fill: '#A2195F',
+        name: 'poly2',
+        closed: true,
+        draggable: true,
+        isCorrect: false,
+        targetCoors: {x: 550, y: 223},
+        visible: true
+    }),
+    poly2R2: ({
+        x: -80,
+        y: 300,
+        points: [0, 26, 53, 54, 53, 0, 0, 26],
+        fill: '#A2195F',
+        name: 'poly2',
+        closed: true,
+        draggable: true,
+        isCorrect: false,
+        targetCoors: {x: 550, y: 223},
+        visible: false
+    }),
+    poly2R3: ({
+        x: -80,
+        y: 400,
+        points: [0, 53, 54, 53, 26, 0, 0, 53],
+        fill: '#A2195F',
+        name: 'poly2',
+        closed: true,
+        draggable: true,
+        isCorrect: false,
+        targetCoors: {x: 550, y: 223},
+        visible: false
+    })
     // rect: ({
     //     x: 350,
     //     y: 100,
@@ -898,10 +986,10 @@ const game1Medium = {
 //     }),
 // }
 
-var game1 = game1Medium;
+var game1 = game1Easy;
 // var game2 = game2Medium;
 // var game3 = game3Medium;
 // var game4 = game1Easy;
 var games = [];
 
-games.push(game1)
+games.push(game1);
