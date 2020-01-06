@@ -41,7 +41,7 @@ $(document).ready(function () {
             name: "poly7",
             fill: 'white',
             closed: true,
-            draggable: true
+            draggable: false
         });
 
         var imageObj = new Image();
@@ -334,14 +334,14 @@ $(document).ready(function () {
     }
 
     function checkSelectedShape(selected) {
-        selected.stroke("#99cc00");
-        selected.strokeWidth(4);
+        // selected.stroke("#99cc00");
+        // selected.strokeWidth(4);
         layer.batchDraw();
     }
 
     function clearPrevSelected(selected) {
-        selected.stroke("#A2195F");
-        selected.strokeWidth(1);
+        // selected.stroke("#A2195F");
+        // selected.strokeWidth(1);
         layer.batchDraw();
     }
 
