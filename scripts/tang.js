@@ -14,6 +14,7 @@ $(document).ready(function () {
     var rotateShapes = [];
     var time = 1;
     var doorImagePath = '../img/kapi.png';
+    var doorRate = 80 / 100;
 
     var stage = new Konva.Stage({
         container: 'container',
@@ -37,7 +38,7 @@ $(document).ready(function () {
         var madalyon = new Konva.Line({
             x: 393,
             y: 104,
-            points: [5, 146, 76, 283, 234, 283, 305, 145, 234, 10, 76, 10],
+            points: [5 * doorRate, 146 * doorRate, 76 * doorRate, 283 * doorRate, 234 * doorRate, 283 * doorRate, 305 * doorRate, 145 * doorRate, 234 * doorRate, 10 * doorRate, 76 * doorRate, 10 * doorRate],
             name: "poly7",
             fill: 'white',
             closed: true,
@@ -50,6 +51,8 @@ $(document).ready(function () {
                 x: 50,
                 y: 50,
                 image: imageObj,
+                width: 1000 * doorRate, //200
+                height: 400 * doorRate // 100
             });
 
             layer.add(tangramDoor);
@@ -75,6 +78,15 @@ $(document).ready(function () {
         });
 
         for (let i = 0; i < game.length; i++) {
+            for (let j = 0; j < game[i][1].points.length; j++) {
+                game[i][1].points[j] = game[i][1].points[j] * doorRate;
+
+                if(game[i][1].points[j] !== parseInt(game[i][1].points[j], 10)) {
+                    game[i][1].points[j] =  Math.round(game[i][1].points[j]);
+                }
+
+            }
+
             if (game[i][1].isTarget) {
                 var target = new Konva.Line({
                     x: game[i][1].x,
@@ -196,11 +208,11 @@ $(document).ready(function () {
             }
         });
 
-        var widthRate = window.innerWidth / 96 + "%";
+        // var widthRate = window.innerWidth / 96 + "%";
 
-        $('#container').css({
-            'margin-left': widthRate,
-        });
+        // $('#container').css({
+        //     'margin-left': widthRate,
+        // });
     }
 
     function autoAddShapes(shapes, hexagon) {
@@ -254,6 +266,7 @@ $(document).ready(function () {
 
     //Şekillerin sadece duvara snaplenmesi için.
     function checkSnapTarget(x, y, snapShape, targetSnapShape, tolerance) {
+        debugger;
         var offsetX = snapShape.x();
         var offsetY = snapShape.y();
 

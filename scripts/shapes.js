@@ -1,7 +1,7 @@
 const game1Easy = {
     gameTarget: ({
-        x: 488,
-        y: 223,
+        x: 469,
+        y: 199,
         points: [0, 0, 0, 54, 62, 54, 115, 26, 62, 0],
         name: 'target',
         fill: 'white',
