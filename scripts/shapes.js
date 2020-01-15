@@ -1,17 +1,17 @@
 const game1Easy = {
     gameTarget: ({
-        x: 400,
-        y: 187,
+        x: 351,
+        y: 139,
         points: [0, 0, 0, 54, 62, 54, 115, 26, 62, 0],
         name: 'target',
-        fill: 'white',
+        fill: 'blue',
         closed: true,
         draggable: false,
         isTarget: true
     }),
     leftSide:({
-        x: 324,
-        y: 92,
+        x: 275,
+        y: 44,
         points: [5, 146, 76, 283, 155, 283, 155, 173, 95, 173, 95, 119, 155, 119, 155, 10, 76, 10],
         name: 'leftSide',
         fill: '#A2195F',
@@ -19,8 +19,8 @@ const game1Easy = {
         draggable: false
     }),
     rightSide:({
-        x: 324,
-        y: 92,
+        x: 275,
+        y: 44,
         points: [155, 10, 155, 119, 205, 145, 155, 173, 155, 283, 234, 283, 305, 145, 234, 10],
         name: 'rightSide',
         fill: '#A2195F',

@@ -36,9 +36,12 @@ $(document).ready(function () {
 
     function setDoor() {
         var madalyon = new Konva.Line({
-            x: 405 * doorRate,
-            y: 115 * doorRate,
+            x: 344 * doorRate,
+            y: 55 * doorRate,
             points: [5 * doorRate, 146 * doorRate, 76 * doorRate, 283 * doorRate, 234 * doorRate, 283 * doorRate, 305 * doorRate, 145 * doorRate, 234 * doorRate, 10 * doorRate, 76 * doorRate, 10 * doorRate],
+            // x: 405 * doorRate,
+            // y: 115 * doorRate,
+            // points: [5 * doorRate, 146 * doorRate, 76 * doorRate, 283 * doorRate, 234 * doorRate, 283 * doorRate, 305 * doorRate, 145 * doorRate, 234 * doorRate, 10 * doorRate, 76 * doorRate, 10 * doorRate],
             name: "poly7",
             fill: 'white',
             closed: true,
@@ -48,8 +51,8 @@ $(document).ready(function () {
         var imageObj = new Image();
         imageObj.onload = function () {
             var tangramDoor = new Konva.Image({
-                x: 50,
-                y: 50,
+                x: 0,
+                y: 0,
                 image: imageObj,
                 width: 1000 * doorRate, //200
                 height: 400 * doorRate // 100
@@ -81,8 +84,8 @@ $(document).ready(function () {
             for (let j = 0; j < game[i][1].points.length; j++) {
                 game[i][1].points[j] = game[i][1].points[j] * doorRate;
 
-                if(game[i][1].points[j] !== parseInt(game[i][1].points[j], 10)) {
-                    game[i][1].points[j] =  Math.round(game[i][1].points[j]);
+                if (game[i][1].points[j] !== parseInt(game[i][1].points[j], 10)) {
+                    game[i][1].points[j] = Math.round(game[i][1].points[j]);
                 }
 
             }
@@ -209,12 +212,6 @@ $(document).ready(function () {
                 });
             }
         });
-
-        // var widthRate = window.innerWidth / 96 + "%";
-
-        // $('#container').css({
-        //     'margin-left': widthRate,
-        // });
     }
 
     function autoAddShapes(shapes, hexagon) {
@@ -394,6 +391,8 @@ $(document).ready(function () {
                     shadowOffsetX: 5,
                     shadowOffsetY: 5
                 });
+                shape.stroke("#A2195F");
+                shape.strokeWidth(1);
                 var currentX = shape.getAbsolutePosition().x;
                 var currentY = shape.getAbsolutePosition().y;
                 var targetX = shape.attrs.targetCoors.x;
