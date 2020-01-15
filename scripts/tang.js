@@ -36,8 +36,8 @@ $(document).ready(function () {
 
     function setDoor() {
         var madalyon = new Konva.Line({
-            x: 393,
-            y: 104,
+            x: 405 * doorRate,
+            y: 115 * doorRate,
             points: [5 * doorRate, 146 * doorRate, 76 * doorRate, 283 * doorRate, 234 * doorRate, 283 * doorRate, 305 * doorRate, 145 * doorRate, 234 * doorRate, 10 * doorRate, 76 * doorRate, 10 * doorRate],
             name: "poly7",
             fill: 'white',
@@ -164,6 +164,8 @@ $(document).ready(function () {
                 shapes.push(draggableShape);
             }
         }
+
+        console.log()
 
         shapes.forEach(shape => {
             if (shape.attrs.name == 'leftSide') {
