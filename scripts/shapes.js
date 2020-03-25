@@ -12,63 +12,155 @@ const game1Easy = {
     poly: ({
         x: 100,
         y: 300,
-        points: [0, 0, 0, 54, 62, 54, 62, 0],
+        points: [0, 0, 0, 170, 155, 230, 145, 0],
         fill: '#A2195F',
         name: 'poly',
         closed: true,
         draggable: true,
-        isSquare: true,
+        isSquare: false,
         isCorrect: true,
-        targetCoors: {x: 488, y: 223}
+        visible: false,
+        targetCoors: {x: 330, y: 75}
+    }),
+    poly1R1: ({
+        x: 300,
+        y: 300,
+        points: [60, 0, 0, 155, 230, 145, 230, 0],
+        fill: '#A2195F',
+        name: 'poly',
+        closed: true,
+        draggable: true,
+        isSquare: false,
+        isCorrect: false,
+        visible: true,
+        targetCoors: {x: 330, y: 75}
+    }),
+    poly1R2: ({
+        x: 400,
+        y: 300,
+        points: [0, 0, 10, 230, 165, 230, 165, 60],
+        fill: '#A2195F',
+        name: 'poly',
+        closed: true,
+        draggable: true,
+        isSquare: false,
+        isCorrect: false,
+        visible: false,
+        targetCoors: {x: 330, y: 75}
+    }),
+    poly1R3: ({
+        x: 500,
+        y: 300,
+        points: [0, 10, 0, 155, 170, 155, 230, 0],
+        fill: '#A2195F',
+        name: 'poly',
+        closed: true,
+        draggable: true,
+        isSquare: false,
+        isCorrect: false,
+        visible: false,
+        targetCoors: {x: 330, y: 75}
     }),
     poly2: ({
-        x: -80,
+        x: 300,
         y: 300,
-        points: [0, 0, 0, 54, 53, 26, 0, 0],
+        points: [0, 0, 10, 230, 65, 90, 0, 0],
         fill: '#A2195F',
         name: 'poly2',
         closed: true,
         draggable: true,
+        isSquare: false,
         isCorrect: true,
-        targetCoors: {x: 550, y: 223},
-        visible: false
+        visible: true,
+        targetCoors: {x: 446, y: 75}
     }),
     poly2R1: ({
-        x: -80,
+        x: 200,
         y: 300,
-        points: [0, 0, 26, 53, 54, 0, 0, 0],
+        points: [0, 10, 140, 65, 230, 0, 0, 10],
         fill: '#A2195F',
         name: 'poly2',
         closed: true,
         draggable: true,
+        isSquare: false,
         isCorrect: false,
-        targetCoors: {x: 550, y: 223},
-        visible: true
+        visible: false,
+        targetCoors: {x: 446, y: 75}
     }),
     poly2R2: ({
-        x: -80,
+        x: 500,
         y: 300,
-        points: [0, 26, 53, 54, 53, 0, 0, 26],
+        points: [10, 140, 75, 230, 65, 0, 10, 140],
         fill: '#A2195F',
         name: 'poly2',
         closed: true,
         draggable: true,
+        isSquare: false,
         isCorrect: false,
-        targetCoors: {x: 550, y: 223},
-        visible: false
+        visible: false,
+        targetCoors: {x: 446, y: 75}
     }),
     poly2R3: ({
-        x: -80,
-        y: 400,
-        points: [0, 53, 54, 53, 26, 0, 0, 53],
+        x: 500,
+        y: 300,
+        points: [0, 65, 230, 55, 90, 0, 0, 65],
         fill: '#A2195F',
         name: 'poly2',
         closed: true,
         draggable: true,
+        isSquare: false,
         isCorrect: false,
-        targetCoors: {x: 550, y: 223},
-        visible: false
-    })
+        visible: false,
+        targetCoors: {x: 446, y: 75}
+    }),
+    // poly2: ({
+    //     x: -80,
+    //     y: 300,
+    //     points: [0, 0, 0, 54, 53, 26, 0, 0],
+    //     fill: '#A2195F',
+    //     name: 'poly2',
+    //     closed: true,
+    //     draggable: true,
+    //     isCorrect: true,
+    //     targetCoors: {x: 550, y: 223},
+    //     visible: false
+    // }),
+    // poly2R1: ({
+    //     x: -80,
+    //     y: 300,
+    //     points: [0, 0, 26, 53, 54, 0, 0, 0],
+    //     fill: '#A2195F',
+    //     name: 'poly2',
+    //     closed: true,
+    //     draggable: true,
+    //     isCorrect: false,
+    //     targetCoors: {x: 550, y: 223},
+    //     visible: true
+    // }),
+    // poly2R2: ({
+    //     x: -80,
+    //     y: 300,
+    //     points: [0, 26, 53, 54, 53, 0, 0, 26],
+    //     fill: '#A2195F',
+    //     name: 'poly2',
+    //     closed: true,
+    //     draggable: true,
+    //     isCorrect: false,
+    //     targetCoors: {x: 550, y: 223},
+    //     visible: false
+    // }),
+    // poly2R3: ({
+    //     x: -80,
+    //     y: 400,
+    //     points: [0, 53, 54, 53, 26, 0, 0, 53],
+    //     fill: '#A2195F',
+    //     name: 'poly2',
+    //     closed: true,
+    //     draggable: true,
+    //     isCorrect: false,
+    //     targetCoors: {x: 550, y: 223},
+    //     visible: false
+    // })
 }
 const game2Easy = {
     gameTarget: ({
@@ -452,7 +544,7 @@ const game1Medium = {
 //         visible: false,  
 //         targetCoors: { x: 350, y: 100 }
 //     }),
-// }
+// } 
 
 var game1 = game1Easy;
 // var game2 = game2Medium;

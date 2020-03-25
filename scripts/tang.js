@@ -248,7 +248,6 @@ $(document).ready(function () {
 
     //Şekillerin sadece duvara snaplenmesi için.
     function checkSnapTarget(x, y, snapShape, targetSnapShape, tolerance) {
-        debugger;
         var offsetX = snapShape.x();
         var offsetY = snapShape.y();
 
