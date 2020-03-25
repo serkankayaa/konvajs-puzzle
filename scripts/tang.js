@@ -13,7 +13,7 @@ $(document).ready(function () {
     var timeIsOver = false;
     var rotateShapes = [];
     var time = 1;
-    var doorImagePath = '../img/kapi.png';
+    var doorImagePath = './img/kapi.png';
     var doorRate = 80 / 100;
 
     var stage = new Konva.Stage({
@@ -39,11 +39,8 @@ $(document).ready(function () {
             x: 344 * doorRate,
             y: 55 * doorRate,
             points: [5 * doorRate, 146 * doorRate, 76 * doorRate, 283 * doorRate, 234 * doorRate, 283 * doorRate, 305 * doorRate, 145 * doorRate, 234 * doorRate, 10 * doorRate, 76 * doorRate, 10 * doorRate],
-            // x: 405 * doorRate,
-            // y: 115 * doorRate,
-            // points: [5 * doorRate, 146 * doorRate, 76 * doorRate, 283 * doorRate, 234 * doorRate, 283 * doorRate, 305 * doorRate, 145 * doorRate, 234 * doorRate, 10 * doorRate, 76 * doorRate, 10 * doorRate],
             name: "poly7",
-            fill: 'white',
+            fill: '#A2195F',
             closed: true,
             draggable: false
         });
@@ -167,20 +164,6 @@ $(document).ready(function () {
                 shapes.push(draggableShape);
             }
         }
-
-        console.log()
-
-        shapes.forEach(shape => {
-            if (shape.attrs.name == 'leftSide') {
-                shape.moveToBottom();
-                layer.draw();
-            }
-
-            if (shape.attrs.name == 'rightSide') {
-                shape.moveToBottom();
-                layer.draw();
-            }
-        });
     }
 
     function setSeatedShapes(shapes) {
